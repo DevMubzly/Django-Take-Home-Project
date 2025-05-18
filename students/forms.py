@@ -56,11 +56,11 @@ class EnrollmentForm(forms.ModelForm):
     
     course = forms.ModelChoiceField(
         queryset=Course.objects.filter(is_active=True),
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
     semester = forms.ChoiceField(
         choices=SEMESTER_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
     year = forms.IntegerField(
         widget=forms.NumberInput(attrs={'class': 'form-control'})

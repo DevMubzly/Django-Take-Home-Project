@@ -25,7 +25,7 @@
                         {% csrf_token %}
                         <div class="form-group mb-3">
                             <label for="grade">Select Grade:</label>
-                            <select name="grade" id="grade" class="form-control">
+                            <select name="grade" id="grade" class="form-select">
                                 <option value="">-- Select Grade --</option>
                                 <option value="A" {% if enrollment.grade == 'A' %}selected{% endif %}>A</option>
                                 <option value="B" {% if enrollment.grade == 'B' %}selected{% endif %}>B</option>

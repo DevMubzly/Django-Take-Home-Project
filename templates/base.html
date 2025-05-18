@@ -29,7 +29,7 @@
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
-                        {% if user.teacher_profile %}
+                        {% if user.is_authenticated and user.teacher_profile|default:False %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                                     {{ user.username }}

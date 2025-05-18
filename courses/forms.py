@@ -70,7 +70,7 @@ class TeacherProfileForm(forms.ModelForm):
 class CourseAssignmentForm(forms.Form):
     course = forms.ModelChoiceField(
         queryset=Course.objects.filter(is_active=True),
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
     
     def __init__(self, *args, **kwargs):

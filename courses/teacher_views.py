@@ -108,11 +108,9 @@ def teacher_update_grade(request, enrollment_id):
     
     return render(request, 'courses/teacher_update_grade.html', {'enrollment': enrollment})
 
-@login_required
 def is_teacher(user):
     return hasattr(user, 'teacher_profile')
 
-@login_required
 def is_student(user):
     return hasattr(user, 'student_profile')
 
