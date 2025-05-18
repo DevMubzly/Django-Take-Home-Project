@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Grade{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Update Grade for {{ enrollment.student.user.get_full_name }}</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Course:</strong> {{ enrollment.course.title }} ({{ enrollment.course.code }})</p>
+                    <p><strong>Semester:</strong> {{ enrollment.semester }} {{ enrollment.year }}</p>
+                    <p><strong>Current Grade:</strong> 
+                        {% if enrollment.grade %}
+                            {{ enrollment.get_grade_display }}
+                        {% else %}
+                            <span class="text-muted">Not graded</span>
+                        {% endif %}
+                    </p>
+                    
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="grade">Select Grade:</label>
+                            <select name="grade" id="grade" class="form-control">
+                                <option value="">-- Select Grade --</option>
+                                <option value="A" {% if enrollment.grade == 'A' %}selected{% endif %}>A</option>
+                                <option value="B" {% if enrollment.grade == 'B' %}selected{% endif %}>B</option>
+                                <option value="C" {% if enrollment.grade == 'C' %}selected{% endif %}>C</option>
+                                <option value="D" {% if enrollment.grade == 'D' %}selected{% endif %}>D</option>
+                                <option value="F" {% if enrollment.grade == 'F' %}selected{% endif %}>F</option>
+                                <option value="I" {% if enrollment.grade == 'I' %}selected{% endif %}>Incomplete</option>
+                                <option value="W" {% if enrollment.grade == 'W' %}selected{% endif %}>Withdrawn</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">Save Grade</button>
+                            <a href="{% url 'courses:teacher_course_students' enrollment.course.id %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

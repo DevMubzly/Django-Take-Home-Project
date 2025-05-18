@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}My Events{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>My Events</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'events:event_list' %}" class="btn btn-primary">
+            Browse All Events
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        {% if registrations %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Registration Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in registrations %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'events:event_detail' registration.event.pk %}">
+                                        {{ registration.event.title }}
+                                    </a>
+                                </td>
+                                <td>{{ registration.event.start_date|date:"F j, Y" }}</td>
+                                <td>{{ registration.event.location }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if registration.event.status == 'upcoming' %}bg-primary
+                                        {% elif registration.event.status == 'ongoing' %}bg-success
+                                        {% elif registration.event.status == 'completed' %}bg-secondary
+                                        {% else %}bg-danger{% endif %}">
+                                        {{ registration.event.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge 
+                                        {% if registration.attendance_status == 'registered' %}bg-info
+                                        {% elif registration.attendance_status == 'attended' %}bg-success
+                                        {% elif registration.attendance_status == 'absent' %}bg-warning
+                                        {% else %}bg-danger{% endif %}">
+                                        {{ registration.get_attendance_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'events:event_detail' registration.event.pk %}" class="btn btn-sm btn-info">
+                                        View
+                                    </a>
+                                    {% if registration.event.status == 'upcoming' and registration.attendance_status == 'registered' %}
+                                    <a href="{% url 'events:event_cancel_registration' registration.event.pk %}" class="btn btn-sm btn-danger">
+                                        Cancel
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                You haven't registered for any events yet. <a href="{% url 'events:event_list' %}">Browse available events</a>.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

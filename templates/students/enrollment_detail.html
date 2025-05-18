@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Enrollment Details{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>Enrollment Details</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'students:enrollment_list' %}" class="btn btn-secondary">
+            Back to Enrollments
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Course Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Course:</div>
+                    <div class="col-md-8">{{ enrollment.course.title }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Course Code:</div>
+                    <div class="col-md-8">{{ enrollment.course.code }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Department:</div>
+                    <div class="col-md-8">{{ enrollment.course.department.name }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Credits:</div>
+                    <div class="col-md-8">{{ enrollment.course.credits }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Level:</div>
+                    <div class="col-md-8">{{ enrollment.course.get_level_display }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5>Enrollment Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Enrollment Date:</div>
+                    <div class="col-md-8">{{ enrollment.enrollment_date }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Semester:</div>
+                    <div class="col-md-8">{{ enrollment.semester }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Year:</div>
+                    <div class="col-md-8">{{ enrollment.year }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Grade:</div>
+                    <div class="col-md-8">{{ enrollment.grade|default:"Not graded yet" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Status:</div>
+                    <div class="col-md-8">
+                        {% if enrollment.is_active %}
+                        <span class="badge bg-success">Active</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Inactive</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

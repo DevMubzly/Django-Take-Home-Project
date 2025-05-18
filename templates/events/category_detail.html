@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>{{ category.name }}</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        {% if user.is_staff %}
+        <a href="{% url 'events:category_edit' category.pk %}" class="btn btn-warning">
+            Edit Category
+        </a>
+        {% endif %}
+        <a href="{% url 'events:category_list' %}" class="btn btn-secondary">
+            Back to Categories
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Category Description</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ category.description|linebreaks|default:"No description available." }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'events:event_list' %}" class="btn btn-info w-100 mb-2">
+                    View All Events
+                </a>
+                {% if user.is_staff %}
+                <a href="{% url 'events:event_create' %}" class="btn btn-success w-100">
+                    Add New Event
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h2>Events in {{ category.name }}</h2>
+        
+        {% if events %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for event in events %}
+                <div class="col">
+                    <div class="card h-100 event-card">
+                        <div class="card-header">
+                            <span class="badge float-end
+                                {% if event.status == 'upcoming' %}bg-primary
+                                {% elif event.status == 'ongoing' %}bg-success
+                                {% elif event.status == 'completed' %}bg-secondary
+                                {% else %}bg-danger{% endif %}">
+                                {{ event.get_status_display }}
+                            </span>
+                            <h5 class="card-title mb-0">{{ event.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="bi bi-geo-alt"></i> {{ event.location }}
+                                </small>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar"></i> {{ event.start_date|date:"F j, Y" }}
+                                </small>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-sm btn-info">View Details</a>
+                            {% if user.is_staff %}
+                            <a href="{% url 'events:event_edit' event.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No events available in this category.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

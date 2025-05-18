@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Teacher Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Teacher Information</h4>
+                </div>
+                <div class="card-body">
+                    <h5>{{ teacher.user.get_full_name }}</h5>
+                    <p><strong>Teacher ID:</strong> {{ teacher.teacher_id }}</p>
+                    <p><strong>Department:</strong> {{ teacher.department.name }}</p>
+                    <p><strong>Qualification:</strong> {{ teacher.qualification }}</p>
+                    <p><strong>Email:</strong> {{ teacher.user.email }}</p>
+                    <p><strong>Bio:</strong> {{ teacher.bio }}</p>
+                    <a href="{% url 'courses:teacher_profile_edit' %}" class="btn btn-primary">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">My Courses</h4>
+                    <a href="{% url 'courses:teacher_course_assign' %}" class="btn btn-light btn-sm">Assign New Course</a>
+                </div>
+                <div class="card-body">
+                    {% if courses %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Title</th>
+                                        <th>Department</th>
+                                        <th>Level</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for course in courses %}
+                                        <tr>
+                                            <td>{{ course.code }}</td>
+                                            <td>{{ course.title }}</td>
+                                            <td>{{ course.department.name }}</td>
+                                            <td>{{ course.level }}</td>
+                                            <td>
+                                                <a href="{% url 'courses:course_detail' course.id %}" class="btn btn-info btn-sm">View</a>
+                                                <a href="{% url 'courses:teacher_course_students' course.id %}" class="btn btn-primary btn-sm">Students</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            You are not assigned to any courses yet. 
+                            <a href="{% url 'courses:teacher_course_assign' %}">Assign yourself to a course</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

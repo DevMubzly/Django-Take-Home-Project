@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}My Enrollments{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>My Enrollments</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'students:enrollment_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Enroll in a Course
+        </a>
+        <a href="{% url 'students:profile' %}" class="btn btn-secondary">
+            Back to Profile
+        </a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        {% if enrollments %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Code</th>
+                            <th>Department</th>
+                            <th>Semester</th>
+                            <th>Year</th>
+                            <th>Grade</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enrollment in enrollments %}
+                        <tr>
+                            <td>{{ enrollment.course.title }}</td>
+                            <td>{{ enrollment.course.code }}</td>
+                            <td>{{ enrollment.course.department.name }}</td>
+                            <td>{{ enrollment.semester }}</td>
+                            <td>{{ enrollment.year }}</td>
+                            <td>{{ enrollment.grade|default:"Not graded" }}</td>
+                            <td>
+                                {% if enrollment.is_active %}
+                                <span class="badge bg-success">Active</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'students:enrollment_detail' enrollment.pk %}" class="btn btn-sm btn-info">Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                You are not enrolled in any courses yet.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

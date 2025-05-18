@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Events</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        {% if user.is_staff %}
+        <a href="{% url 'events:event_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Event
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        {% if events %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for event in events %}
+                <div class="col">
+                    <div class="card h-100 event-card">
+                        <div class="card-header">
+                            <span class="badge float-end
+                                {% if event.status == 'upcoming' %}bg-primary
+                                {% elif event.status == 'ongoing' %}bg-success
+                                {% elif event.status == 'completed' %}bg-secondary
+                                {% else %}bg-danger{% endif %}">
+                                {{ event.get_status_display }}
+                            </span>
+                            <h5 class="card-title mb-0">{{ event.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="bi bi-geo-alt"></i> {{ event.location }}
+                                </small>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar"></i> {{ event.start_date|date:"F j, Y" }}
+                                </small>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-sm btn-info">View Details</a>
+                            {% if user.is_staff %}
+                            <a href="{% url 'events:event_edit' event.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No events available at the moment.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

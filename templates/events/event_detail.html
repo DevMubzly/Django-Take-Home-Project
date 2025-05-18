@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>{{ event.title }}</h1>
+        <span class="badge 
+            {% if event.status == 'upcoming' %}bg-primary
+            {% elif event.status == 'ongoing' %}bg-success
+            {% elif event.status == 'completed' %}bg-secondary
+            {% else %}bg-danger{% endif %}">
+            {{ event.get_status_display }}
+        </span>
+    </div>
+    <div class="col-md-4 text-end">
+        {% if user.is_staff %}
+        <a href="{% url 'events:event_edit' event.pk %}" class="btn btn-warning">
+            Edit Event
+        </a>
+        {% endif %}
+        <a href="{% url 'events:event_list' %}" class="btn btn-secondary">
+            Back to Events
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Event Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Category:</div>
+                    <div class="col-md-8">
+                        <a href="{% url 'events:category_detail' event.category.pk %}">
+                            {{ event.category.name }}
+                        </a>
+                    </div>
+                </div>
+                {% if event.department %}
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Department:</div>
+                    <div class="col-md-8">
+                        <a href="{% url 'courses:department_detail' event.department.pk %}">
+                            {{ event.department.name }}
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Location:</div>
+                    <div class="col-md-8">{{ event.location }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Start Date:</div>
+                    <div class="col-md-8">{{ event.start_date|date:"F j, Y, g:i a" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">End Date:</div>
+                    <div class="col-md-8">{{ event.end_date|date:"F j, Y, g:i a" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Registration Deadline:</div>
+                    <div class="col-md-8">{{ event.registration_deadline|date:"F j, Y, g:i a" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Maximum Participants:</div>
+                    <div class="col-md-8">{{ event.max_participants }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Organizer:</div>
+                    <div class="col-md-8">{{ event.organizer.get_full_name|default:event.organizer.username }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Event Description</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ event.description|linebreaks }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Registration</h5>
+            </div>
+            <div class="card-body">
+                {% if user.is_authenticated %}
+                    {% if user_registered %}
+                        <div class="alert alert-success">
+                            You are registered for this event.
+                        </div>
+                        <a href="{% url 'events:event_cancel_registration' event.pk %}" class="btn btn-danger w-100">
+                            Cancel Registration
+                        </a>
+                    {% elif event.status == 'upcoming' and event.registration_deadline > now %}
+                        <a href="{% url 'events:event_register' event.pk %}" class="btn btn-success w-100">
+                            Register for Event
+                        </a>
+                    {% elif event.status == 'upcoming' %}
+                        <div class="alert alert-warning">
+                            Registration for this event has closed.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            This event is {{ event.get_status_display|lower }}.
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-info">
+                        Please <a href="{% url 'login' %}">login</a> to register for this event.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

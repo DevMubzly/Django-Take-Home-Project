@@ -1,0 +1,92 @@
+/* Custom styles for Student Portal */
+
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Card styling */
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+/* Form styling */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Table styling */
+.table th {
+    background-color: #f1f1f1;
+}
+
+/* Footer styling */
+footer {
+    border-top: 1px solid #dee2e6;
+}
+
+/* Profile page styling */
+.profile-header {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Event and course cards */
+.event-card .card-header,
+.course-card .card-header {
+    color: white;
+}
+
+.event-card .card-header {
+    background-color: #198754;
+}
+
+.course-card .card-header {
+    background-color: #0d6efd;
+}
+
+/* Status badges */
+.badge-upcoming {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.badge-ongoing {
+    background-color: #198754;
+    color: white;
+}
+
+.badge-completed {
+    background-color: #6c757d;
+    color: white;
+}
+
+.badge-cancelled {
+    background-color: #dc3545;
+    color: white;
+}

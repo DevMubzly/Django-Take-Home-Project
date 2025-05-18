@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Departments{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Departments</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        {% if user.is_staff %}
+        <a href="{% url 'courses:department_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Department
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        {% if departments %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for department in departments %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ department.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ department.code }}</h6>
+                            <p class="card-text">{{ department.description|truncatewords:20 }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="{% url 'courses:department_detail' department.pk %}" class="btn btn-sm btn-info">View Details</a>
+                            {% if user.is_staff %}
+                            <a href="{% url 'courses:department_edit' department.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No departments available at the moment.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

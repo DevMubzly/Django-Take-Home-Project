@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>{{ course.title }}</h1>
+        <h4 class="text-muted">{{ course.code }}</h4>
+    </div>
+    <div class="col-md-4 text-end">
+        {% if user.is_staff %}
+        <a href="{% url 'courses:course_edit' course.pk %}" class="btn btn-warning">
+            Edit Course
+        </a>
+        {% endif %}
+        <a href="{% url 'courses:course_list' %}" class="btn btn-secondary">
+            Back to Courses
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Course Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Department:</div>
+                    <div class="col-md-8">
+                        <a href="{% url 'courses:department_detail' course.department.pk %}">
+                            {{ course.department.name }} ({{ course.department.code }})
+                        </a>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Level:</div>
+                    <div class="col-md-8">{{ course.get_level_display }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Credits:</div>
+                    <div class="col-md-8">{{ course.credits }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Status:</div>
+                    <div class="col-md-8">
+                        {% if course.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-danger">Inactive</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Created:</div>
+                    <div class="col-md-8">{{ course.created_at|date:"F j, Y" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Last Updated:</div>
+                    <div class="col-md-8">{{ course.updated_at|date:"F j, Y" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Course Description</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ course.description|linebreaks }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Actions</h5>
+            </div>
+            <div class="card-body">
+                {% if user.is_authenticated and not user.is_staff %}
+                <a href="#" class="btn btn-success w-100 mb-2">Enroll in Course</a>
+                {% endif %}
+                <a href="{% url 'courses:department_detail' course.department.pk %}" class="btn btn-info w-100 mb-2">
+                    View Department
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

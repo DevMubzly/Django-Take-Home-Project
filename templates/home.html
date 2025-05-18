@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Student Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center mb-4">
+        <h1 class="display-4">Welcome to Student Portal</h1>
+        <p class="lead">Your one-stop platform for managing courses, events, and student information</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Courses</h5>
+                <p class="card-text">Browse available courses, view course details, and manage your enrollments.</p>
+                <a href="{% url 'courses:course_list' %}" class="btn btn-primary">View Courses</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Events</h5>
+                <p class="card-text">Discover campus events, register for upcoming activities, and track your event participation.</p>
+                <a href="{% url 'events:event_list' %}" class="btn btn-primary">View Events</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Student Profile</h5>
+                <p class="card-text">Manage your personal information, view your enrollments, and track your academic progress.</p>
+                {% if user.is_authenticated %}
+                <a href="{% url 'students:profile' %}" class="btn btn-primary">My Profile</a>
+                {% else %}
+                <a href="{% url 'students:register' %}" class="btn btn-primary">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
